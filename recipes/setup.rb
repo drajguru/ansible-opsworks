@@ -21,19 +21,19 @@ execute "tag instance" do
 end
 
 execute "configure base" do
-  command "ansible-playbook -i /home/ec2-user/base/inv /home/ec2-user/base/configure.yml --extra-vars '#{extra_vars.to_json}'"
-  only_if { ::File.exists?("/home/ec2-user/base/configure.yml")}
+  command "ansible-playbook -i /home/ubuntu/base/inv /home/ubuntu/base/configure.yml --extra-vars '#{extra_vars.to_json}'"
+  only_if { ::File.exists?("/home/ubuntu/base/configure.yml")}
   action :run
 end
 
 execute "setup" do
-  command "ansible-playbook -i /home/ec2-user/ansible/inv /home/ec2-user/ansible/#{node['opsworks']['activity']}.yml --extra-vars '#{extra_vars.to_json}'"
-  only_if { ::File.exists?("/home/ec2-user/ansible/#{node['opsworks']['activity']}.yml")}
+  command "ansible-playbook -i /home/ubuntu/ansible/inv /home/ubuntu/ansible/#{node['opsworks']['activity']}.yml --extra-vars '#{extra_vars.to_json}'"
+  only_if { ::File.exists?("/home/ubuntu/ansible/#{node['opsworks']['activity']}.yml")}
   action :run
 end
 
-if ::File.exists?("/home/ec2-user/ansible/#{node['opsworks']['activity']}.yml")
+if ::File.exists?("/home/ubuntu/ansible/#{node['opsworks']['activity']}.yml")
   Chef::Log.info("Log into #{node['opsworks']['instance']['private_ip']} and view /var/log/ansible.log to see the output of your ansible run")
 else
-  Chef::Log.info("No updates: /home/ec2-user/ansible/#{node['opsworks']['activity']}.yml not found")
+  Chef::Log.info("No updates: /home/ubuntu/ansible/#{node['opsworks']['activity']}.yml not found")
 end
